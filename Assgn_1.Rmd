@@ -1,0 +1,110 @@
+---
+title: "Data_607-Assignment_1"
+author: "Nnaemezue Obi-Eyisi"
+date: "February 2, 2017"
+output: html_document
+---
+
+Let's first load the Mushroom Dataset into R Dataframe
+
+```{r}
+data_url <- "https://archive.ics.uci.edu/ml/machine-learning-databases/mushroom/agaricus-lepiota.data"
+
+mushroom_df <- read.table(file=data_url, header = FALSE, sep =",",
+                          stringsAsFactors = FALSE)
+
+#View(mushroom_df)
+```
+
+Based on the rules in the data dictionary we care about
+Attribute odor V6
+Attribute spore-print-color V21
+Attribute stalk-surface-below-ring V14
+Attribute stalk-color-above-ring V13
+Attribute habitat V23
+Attribute cap-color V4
+Attribute population V22
+
+Therefore, these attributes will form our subset
+
+
+Create Mushroom Dataframe subset(Mushroom_df_sub) and name the columns
+```{r}
+mushroom_df_sub <-mushroom_df[c(1,6,4,15,14,21,22,23)]
+names(mushroom_df_sub)<- c("Mushroom_class","odor","cap-color","stalk-color-above-ring"
+                           ,"stalk-surface-below-ring","spore-print-color","population",
+                           "habitat")
+
+#View top 10 rows of the subset of Mushroom_df
+head(mushroom_df_sub, n=10)
+```
+
+Transform Mushroom class field to a more descriptive format
+
+However let's see distinct values of the mushroom_class and know that we are transforming all the possible values
+```{r}
+unique(mushroom_df_sub$Mushroom_class)
+mushroom_df_sub$Mushroom_class[c(mushroom_df_sub$Mushroom_class =='p')] <- c("poisonous")
+mushroom_df_sub$Mushroom_class[c(mushroom_df_sub$Mushroom_class =='e')] <- c("edible")
+
+
+```
+Transform odor field to a more descriptive format
+```{r}
+unique(mushroom_df_sub$odor)
+
+lookup_odor<-c(a="almond",l="anise",c="creosote",y="fishy",f="foul", m="musty",n="none",p="pungent",s="spicy")
+
+#Notice if we list the names of the vector we can repeat the colnames
+lookup_odor[c('a','l','l')]
+
+#Create a character vector from the column names of the dataframe
+head(lookup_odor[mushroom_df_sub$odor],n=10)
+
+#Replace the odor column  with the character vector created but with no names
+
+mushroom_df_sub$odor <- unname(lookup_odor[mushroom_df_sub$odor])
+
+
+
+```
+Transform cap_color column
+```{r}
+unique(mushroom_df_sub$`cap-color`) #Ensure all field values have description
+
+lookup_cap.color <- c(n="brown",b="buff",c="cinnamon",g="gray",r="green", p="pink", u="purple",e="red",w="white",y="yellow" )
+
+mushroom_df_sub$`cap-color` <- unname(lookup_cap.color[mushroom_df_sub$`cap-color`])
+
+
+```
+Transform rest of columns
+```{r}
+lookup_cap.sporeprintcolor <- c(k="black",n="brown",b="buff",h="chocolate",r="green", o="orange",
+                      u="purple",w="white",y="yellow" )
+
+mushroom_df_sub$`spore-print-color` <- unname(lookup_cap.sporeprintcolor[mushroom_df_sub$`spore-print-color`])
+
+unique(mushroom_df_sub$`stalk-color-above-ring`)
+lookup_stalk_c_abR <- c(n='brown',b='buff',c='cinnamon',g='gray',o='orange',
+                                  p='pink',e='red',w='white',y='yellow')
+mushroom_df_sub$`stalk-color-above-ring` <- unname(lookup_stalk_c_abR[mushroom_df_sub$`stalk-color-above-ring`])
+
+
+lookup_stalk_sbr <- c(f='fibrous',y='scaly',k='silky',s='smooth')
+mushroom_df_sub$`stalk-surface-below-ring` <- unname(lookup_stalk_sbr[mushroom_df_sub$`stalk-surface-below-ring`])
+
+lookup_population <- c(a='abundant',c='clustered',n='numerous',
+                                  s='scattered',v='several',y='solitary')
+mushroom_df_sub$population <- unname(lookup_population[mushroom_df_sub$population])
+
+lookup_habitat <- c(g='grasses',l='leaves',m='meadows',p='paths',
+                                  u='urban',w='waste',d='woods')
+mushroom_df_sub$habitat <- unname(lookup_habitat[mushroom_df_sub$habitat])
+
+```
+
+Display final result of transformed Data frame top 100
+```{r}
+ head(mushroom_df_sub,20)
+```
