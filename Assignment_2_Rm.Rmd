@@ -1,0 +1,126 @@
+---
+title: "Assigment_2_Data607"
+author: "Nnaemezue Obi-Eyisi"
+date: "February 12, 2017"
+output: html_document
+---
+
+Load Required Libraries or packages for Code
+
+```{r}
+
+library(RODBC)
+require(ggplot2)
+
+```
+
+Load the SQL table into an R Dataframe
+To Set up SQL Server Database ODBC connection
+Follow the below steps as prescribed in https://technet.microsoft.com/en-us/library/cc879308(v=sql.105).aspx
+
+To run the SQL Server DSN Configuration Wizard
+Open the ODBC Data Source Administrator as described in the topic, How to: Open the ODBC Data Source Administrator.
+On the User DSN tab or the System DSN tab, click Add to add a user data source or a system data source.
+Click SQL Native Client or SQL Server Native Client 10.0 to select the driver, and then click Finish.
+Follow the instructions in the Wizard.
+```{r}
+SQL_Server_connection <- odbcConnect("SQL_MEZUE-PC")
+# SELECT * FROM Movie Reviews table into a Data Frame
+
+# Check that connection is working 
+odbcGetInfo(SQL_Server_connection)
+
+# Query the database and put the results into the data frame "dataframe"
+ Movie_Review_Df <- sqlQuery(SQL_Server_connection, "
+ SELECT *
+ FROM
+ MyDb.[dbo].[Movie_Reviews_Stage]")
+ 
+ Movie_Review_Df
+
+ 
+```
+
+ 
+ Normalized version of the data frame is below
+ 
+```{r}
+
+ 
+ Reviewer_df <- sqlQuery(SQL_Server_connection, "
+ SELECT *
+ FROM
+ MyDb.[dbo].[Reviewer]")
+ 
+ Reviewer_df
+ 
+ Movies_Title_df <- sqlQuery(SQL_Server_connection, "
+ SELECT *
+ FROM
+ MyDb.[dbo].[Movies]")
+ 
+Movies_Title_df
+
+ Movie_Review_Xref_df <- sqlQuery(SQL_Server_connection, "
+ SELECT *
+ FROM
+ MyDb.[dbo].[Movie_Review_Xref]")
+
+ Movie_Review_Xref_df
+```
+
+
+Perform few data analysis on the Average Ratings from Reviews
+
+
+
+
+```{r}
+hist(Movie_Review_Df$Ratings,main ="Movie_Review", xlab = "Ratings")
+
+```
+
+
+
+Perform few data analysis on the Average Ratings from Reviews
+
+
+
+
+```{r}
+ggplot(data = Movie_Review_Df) +geom_histogram(aes(x=Ratings))
+```
+
+
+
+Display box plot of the Ratings per Title
+
+
+
+```{r}
+boxplot(Ratings~ Movie_Title,  data = Movie_Review_Df)
+```
+
+
+
+Plot points of Movie Ratings
+
+
+
+
+```{r}
+p1 <- ggplot(Movie_Review_Df, aes(x = Movie_Title, y = Ratings))
+
+p1 + geom_point(color="red") 
+```
+
+
+
+Violin Plot of the Average Ratings per movie
+
+
+
+
+```{r}
+ggplot(Movie_Review_Df, aes(x=Movie_Title,y=Ratings)) + geom_violin() + stat_summary(fun.y=mean, geom="point", shape=23, size=2)
+```
