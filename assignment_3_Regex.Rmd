@@ -1,0 +1,183 @@
+---
+title: "Assignment_3_Data607"
+author: "Nnaemezue Obi-Eyisi"
+date: "February 18, 2017"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(stringr)
+```
+
+Problem 3 a: Rearrange name vector to be first name last name
+
+
+Letes first understand the raw.data extraction logic
+
+This below logic searches for a pattern that consists of ['alphabets'',''.' '] that appear twice or more times in a sequence. Extract all gets all matches and does not stop at first match
+
+
+```{r}
+
+raw.data <- "555-1239Moe Szyslak(636) 555-0113Burns, C. Montgomery555-6542Rev. Timothy Lovejoy555 8904Ned Flanders636-555-3226Simpson, Homer5553642Dr. Julius Hibbert"
+
+library(stringr)
+ name <- unlist(str_extract_all(raw.data, "[[:alpha:]., ]{2,}"))
+ name
+```
+
+What class is the 'name' vector
+```{r}
+class(name)
+```
+
+we see it is character vector
+
+The first Problem 1 says we have to rearragne the Vector to be in format of first name last name
+
+To solve this lets extra all characters (pattern) starting with upper case alphabets that occur one or n number of times in a sequence
+
+```{r}
+str_extract_all(name, "[A-Za-z]+")
+```
+Notice it did not solve the problem lets try a different way
+
+
+Replace titles and middle names with empty string
+```{r}
+
+
+
+Fname_LName<-str_replace(name,'[A-Za-z]+[.]','')
+
+#Cleanup the extra space and ,
+Fname_LName<-str_replace(Fname_LName,'[,]|, |^ ', '')
+Fname_LName<-str_replace(Fname_LName,'  ', ' ')
+
+
+Fname_LName
+
+```
+PRoblem 3b
+Logical vector to show if someone has title
+```{r}
+name
+
+str_detect(name, '^[A-Za-z]+[.]')
+```
+Problem 3c
+Construct a logical vector indicating whether a character has a second name.
+```{r}
+name
+str_detect(name,' [A-Z][.]')
+```
+
+Problme 4a
+Describe regular expression and construct an example that matches
+[0-9]+\\$
+
+This matches a pattern of one or more digits in sequence ending with a literal $, useful when looking for dollar amounts
+
+```{r}
+#Example
+
+str_extract_all('Product 1 sales 5000$   Product 2 Sales 400$','[0-9]+\\$')
+  
+```
+
+
+Problem 4b
+
+\\b[a-z]{1,4}\\b
+
+The expression matches small case alphabets a-z atleast one time and not more than 4 times, with words ending with the small case alphabet, notice that it does not extract "hard" even though it is a 4 letters in sequence
+```{r}
+str_extract_all('I love hardwork.','\\b[a-z]{1,4}\\b')
+```
+
+
+Problem 4c
+.*?\\.txt$
+
+The expression matches input string starting with any character zero or more times, and ending with .txt. Note that will return a string even with spaces and punctation as long as the last characters are .txt and won't return even if there is a .txt prior the last characters in the input string 
+```{r}
+str_extract_all('File_001.txt','.*?\\.txt$')
+
+#Here we want to retun only file_001.txt but using this it would not work
+str_extract_all('File_001.txt, File_003.csv','.*?\\.txt$')
+
+#to address this issue we use word edge \\b
+str_extract_all('File_001.txt, File_003.csv','.*?.txt\\b')
+```
+
+Problem 4d
+\\d{2}/\\d{2}/\\d{4}
+
+This pattern is looking for a string that starts with two consecutive digits, a '/' another 2 consecutive digits, another / and then 4 consecutive digits,
+
+This is like a date of birth format ie (04/12/1987)
+```{r}
+str_extract('John smith Date of birth is 22/12/1990','\\d{2}/\\d{2}/\\d{4}')
+```
+
+Problem 4 e
+
+<(.+?)>.+?</\\1>
+
+
+This pattern(backreference pattern) looks for a character string starting with < then one or more of any character then followed by >, It picks up all the characters after the first match Till it sees that first match but with '</' presiding it
+```{r}
+
+
+str_extract('1. A <xml>mall gfg <gh> </xml></</<\\1entence. - 2. Another tiny sentence.','<(.+)>.+?</\\1>')
+
+#This example is of a catalog of books xml file that has some attributes for various books in the catalog, The Regex expression will first find the first  tag that is any character then extracts all the still till it reaches the closing  tag
+catalog_xmlTag <- "<catalog>
+                      <book id=1>
+                        <author>Gambardella, Matthew</author>
+                        <title>XML Developer's Guide</title>
+                        <genre>Computer</genre>
+                      </book>
+                      <book id=2>
+                        <author>Ralls, Kim</author>
+                        <title>Midnight Rain</title>
+                        <genre>Fantasy</genre>
+                      </book>
+                   </catalog>"
+
+str_extract(catalog_xmlTag,'<(.+).+?</\\1>')
+
+#Notice here that it did not match catalog or book tag because they have new #line characters in between them which is not part of our search
+```
+
+Problem 9 attempt
+
+clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0TanwoUwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigO
+d6vrfUrbz2.2bkAnbhzgv4R9i05zEcrop.wAgnb.SqoU65fPa1otfb7wEm24k6t3sR9zqe5
+fy89n6Nd5t9kc4fE905gmc4Rgxo5nhDk!gr
+
+```{r}
+code <-'clcopCow1zmstc0d87wnkig7OvdicpNuggvhryn92Gjuwczi8hqrfpRxs5Aj5dwpn0TanwoUwisdij7Lj8kpf03AT5Idr3coc0bt7yczjatOaootj55t3Nj3ne6c4Sfek.r1w1YwwojigOd6vrfUrbz2.2bkAnbhzgv4R9i05zEcrop.wAgnb.SqoU65fPa1otfb7wEm24k6t3sR9zqe5fy89n6Nd5t9kc4fE905gmc4Rgxo5nhDk!gr'
+
+
+#extract all numbers
+ code_nums <-str_extract_all(code , '[0-9]+')
+
+ #use another   to store only all alphabet characters 
+codealphabet <- code
+
+codealphabet <- str_replace_all(codealphabet, '[0-9]+','')
+codelowercase <- str_replace_all(codealphabet, '[a-z]','')
+codeuppercase <- str_replace_all(codealphabet, '[A-Z]','')
+
+
+
+
+#the answer is this
+codelowercase
+```
+
+
+
+
