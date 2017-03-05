@@ -1,0 +1,120 @@
+---
+title: "Assignment 5 Data607"
+author: "Nnaemezue Obi-Eyisi"
+date: "March 1, 2017"
+output: html_document
+---
+
+#Load libraries for tidyr and dplyr
+```{r results='hide', message=FALSE, warning = FALSE}
+
+library("tidyr")
+library(dplyr)
+library(ggplot2)
+
+
+```
+
+#Read info from csv into R
+```{r readin, eval = TRUE, warning = FALSE}
+filename <- c("https://raw.githubusercontent.com/nobieyi00/CUNY_MSDA_R/master/flight_dataset.csv")
+
+flight_dataset_df <- read.csv(filename,stringsAsFactors = FALSE)
+flight_dataset_df
+```
+#Tidy data
+
+#Narrow down the table
+```{r}
+Flight_tidy <- tbl_df(flight_dataset_df)
+
+#Narrow down the table structure
+
+flight_freq <- Flight_tidy %>% 
+  gather (State,frequency,-Airline,-Arrival_Status)
+
+flight_freq
+```
+#Normalize flight data set so that we can see for each airline and state, the frequencies of ontime and delays 
+```{r}
+on_time_ds<- select (
+        filter(flight_freq, Arrival_Status=='On time' )
+        ,Airline,State,On_time_freq=frequency
+       )
+
+delayed_ds <-select (
+        filter(flight_freq, Arrival_Status=='Delayed' )
+        ,Airline,State,Delayed_freq=frequency
+       )
+flight_ds <-inner_join(on_time_ds, delayed_ds, by = c("Airline","State"))
+flight_ds
+```
+
+#Mutate Result set to calculate Ratio of delays per Airline, per state
+
+```{r}
+Ratio_delay_ds <- mutate(flight_ds, Total_freq= On_time_freq + Delayed_freq, 
+        Average_Delays = Delayed_freq/Total_freq)
+```
+
+#Rearrange / sort dataset by the delay ratio to see Airline that performs worse
+
+```{r}
+arrange(Ratio_delay_ds,State,Average_Delays)  
+```
+
+#We start noticing that the AMWEST airline performs worse per state.
+
+```{r}
+
+ggplot(Ratio_delay_ds,aes(x = State, y =Average_Delays))+
+      geom_point(aes(color=Airline),               # colour depends on cond2
+               size=3) 
+
+```
+
+```{r}
+
+Flight_graph <-mutate(Ratio_delay_ds, Airline_State= paste(Airline, State, sep ="_")) 
+
+
+
+ggplot(Flight_graph, aes(x=State,y=Average_Delays)) + geom_boxplot(aes(color=Airline))
+
+```
+
+#In summary, we can say that the ALASKA airline is more on time
+
+#Find total sum of average of the delay for both airline
+```{r}
+Flight_summary <- Ratio_delay_ds %>% 
+  group_by(Airline) %>% 
+  summarise(Total_average_Delay = sum(Average_Delays))
+
+Flight_summary
+
+```
+
+
+```{r}
+ggplot(Flight_summary, aes(y=Total_average_Delay,x=Airline))  + geom_boxplot(aes(color= Airline),size =3)
+```
+
+#Most delays comes from AMWEST airline
+
+#Just for curiosity, which city experienced the most delays?
+
+```{r}
+City_summary <- Ratio_delay_ds %>% 
+  group_by(State) %>% 
+  summarise(Total_average_Delay = sum(Average_Delays))
+
+arrange(City_summary,Total_average_Delay)
+```
+
+#Represent in a box plot
+```{r}
+ggplot(City_summary, aes(y=Total_average_Delay,x=State))  + geom_boxplot(aes(color= State),size =3)
+```
+
+#We can see it is San Franciso
