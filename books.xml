@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!DOCTYPE books>
+<BOOKS>
+	<book id ="1">
+		<title>Think and Grow Rich</title>
+		<author id ="1">  
+			<first_name>Napoleon</first_name>
+			<last_name>Hill</last_name>
+		</author>
+		<genre>Personal Development</genre>
+		<price>44.95</price>
+		<page_count>279</page_count>
+		<language>English</language>
+	</book>
+	<book id ="2">
+		<title>Uberleben fur Marsianer</title>
+		<author id ="1">  
+			<first_name>Alfred</first_name>
+			<last_name>Bekker</last_name>
+		</author>
+		<author id ="2">  
+			<first_name>Claude</first_name>
+			<last_name>Faine</last_name>
+		</author>
+		<genre>Science Fiction</genre>
+		<price>1.06</price>
+		<page_count>208</page_count>
+		<language>German</language>
+	</book>
+	<book id ="3">
+		<title>Nineteen Eighty-Four</title>
+		<author id ="1">  
+			<first_name>George</first_name>
+			<last_name>Orwell</last_name>
+		</author>
+		<genre>Science Fiction</genre>
+		<price>10</price>
+		<page_count>336</page_count>
+		<language>English</language>
+	</book>
+	<book id ="4">
+		<title>Principles of mathematical analysis</title>
+		<author id ="1">  
+			<first_name>Walter</first_name>
+			<last_name>Rudin</last_name>
+		</author>
+		<genre>Mathematics</genre>
+		<price>40</price>
+		<page_count>306</page_count>
+		<language>English</language>
+	</book>
+
+</BOOKS>
