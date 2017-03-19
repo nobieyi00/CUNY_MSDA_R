@@ -1,0 +1,41 @@
+[
+
+	{
+		"Title":"Think and Grow Rich",
+		"Author":"Napoleon Hill",
+		"Genre":"Personal Development",
+		"Price":"44.95",
+		"page_count":"279",
+		"language":"English"
+
+
+	},
+	{
+		"Title":"Uberleben fur Marsianer",
+		"Author":["Alfred Bekker","Claude Faine"],
+		"Genre":"Science Fiction",
+		"Price":"1.06",
+		"page_count":"208",
+		"language":"German"
+	},
+	{
+	
+		"Title":"Nineteen Eighty-Four",
+		"Author":"George Orwell",
+		"Genre":"Science Fiction",
+		"Price":"10",
+		"page_count":"336",
+		"language":"English"
+	},
+	
+	{
+	
+		"Title":"Principles of mathematical analysis",
+		"Author":Walter Rudin",
+		"Genre":"Mathematics",
+		"Price":"40",
+		"page_count":"306",
+		"language":"English"
+	}
+
+]
