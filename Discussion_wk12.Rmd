@@ -1,0 +1,22 @@
+---
+title: "Discussion Week11"
+author: "Nnaemezue Obi-Eyisi"
+date: "April 18, 2017"
+output: html_document
+---
+
+YOUTUBE RECOMMENDER SYSTEM
+
+I am big fan and user of Youtube services. I constantly watch various videos like music, entertainment and education. I have always found their recommendation algorithm very interesting, especially when I spend half of my day endlessly browsing through videos.
+
+The target users are the general population that watches the Youtube videos. 
+The goal of the Youtube audience is to watch relevant videos that can be entertaining, educational or interesting. They also want to find videos that might be related and offer similar values as the current video they watched
+You can help them by providing useful content that answers their search query. In addition to providing those with related videos that have expand of the same searched topic. These related videos have to be closely related to the current video so the user can spend more time in the website. We also want to ensure the User gets notified when a frequently watched content comes online, this way the user gets a great value for watching video content on Youtube.
+
+The recommendation videos are positioned strategically at the right corner of the screen making it very easy for the user to navigate. According research, the related videos account for the second highest source of views to a view, after Youtube search.  There is a strong correlation between the view count of a video and view count of the top referrer video. Also with the unique Youtube's video recommendation, they ensure to recommend videos that are of interest to the user compared to popular videos.
+
+Youtube currently employs complex matrix factorization, which might not scale well with deep neural network architecture. Youtube recommendations seem to have an inherent bias towards the past and the new deep neural network model always to represent the time-dependent model of popular. This however is subjective to the user, since some users do not care when the video was released but the content of the video.
+
+Reference:
+ https://pdfs.semanticscholar.org/4ab5/f5980179e51bd4ccb63875ade79fe30bb892.pdf
+https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45530.pdf
